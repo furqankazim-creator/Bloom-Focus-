@@ -197,6 +197,57 @@ export const SETTINGS: Record<LibraryFamilyId, Spec> = {
     ],
     defaults: [{ targets: 3, count: 24, rotate: false }, { targets: 6, count: 36, rotate: true }, { targets: 6, count: 44, rotate: true }],
   },
+  sayIt: {
+    fields: [
+      { key: 'words', label: 'Pictures', kind: 'choice', options: [{ value: 'easy', label: 'Everyday words' }, { value: 'nouns', label: 'All picture words' }, { value: 'actions', label: 'Action words' }] },
+      { key: 'own', label: 'Your own words (target sounds)', kind: 'words', placeholder: 'e.g. sun, sock, seven', hint: 'Leave empty to use the pictures. Own words are shown as text.' },
+      { key: 'count', label: 'Cards', kind: 'choice', options: nums([4, 6, 8, 10, 12]) },
+      { key: 'showWord', label: 'Show the written word', kind: 'choice', options: yesNo },
+      { key: 'record', label: 'Record & hear yourself', kind: 'choice', options: yesNo },
+    ],
+    defaults: [{ words: 'easy', own: [], count: 6, showWord: true, record: true }, { words: 'nouns', own: [], count: 8, showWord: false, record: true }, { words: 'actions', own: [], count: 8, showWord: false, record: true }],
+  },
+  soundDetective: {
+    fields: [
+      { key: 'choices', label: 'Pictures to choose from', kind: 'choice', options: nums([2, 3, 4]) },
+      { key: 'rounds', label: 'Sounds', kind: 'choice', options: nums([4, 6, 8, 10]) },
+      { key: 'tricky', label: 'Include sounds that are easy to mix up', kind: 'choice', options: yesNo },
+    ],
+    defaults: [{ choices: 2, rounds: 6, tricky: false }, { choices: 3, rounds: 8, tricky: false }, { choices: 4, rounds: 8, tricky: true }],
+  },
+  oddOneOut: {
+    fields: [
+      { key: 'kind', label: 'Groups', kind: 'choice', options: [{ value: 'far', label: 'Very different' }, { value: 'close', label: 'Close (fruit vs vegetables)' }, { value: 'think', label: 'Think harder (what things do)' }] },
+      { key: 'rounds', label: 'Rounds', kind: 'choice', options: nums([4, 6, 8]) },
+    ],
+    defaults: [{ kind: 'far', rounds: 6 }, { kind: 'close', rounds: 6 }, { kind: 'think', rounds: 6 }],
+  },
+  listenDo: {
+    fields: [
+      { key: 'keyWords', label: 'Key words to listen for', kind: 'choice', options: [{ value: 1, label: '1 · “the star”' }, { value: 2, label: '2 · “the red star”' }, { value: 3, label: '3 · “the small red star”' }] },
+      { key: 'containers', label: 'Add “put it in the …”', kind: 'choice', options: yesNo },
+      { key: 'showText', label: 'Show the instruction as text', kind: 'choice', options: yesNo },
+      { key: 'rounds', label: 'Instructions', kind: 'choice', options: nums([4, 5, 6, 8]) },
+    ],
+    defaults: [{ keyWords: 1, containers: false, showText: true, rounds: 5 }, { keyWords: 2, containers: false, showText: true, rounds: 6 }, { keyWords: 3, containers: true, showText: false, rounds: 6 }],
+  },
+  questionTime: {
+    fields: [
+      { key: 'kind', label: 'Questions', kind: 'choice', options: [{ value: 'which', label: '“Which one is the …?”' }, { value: 'what', label: '“What do we … with?”' }, { value: 'think', label: 'Who / where / which' }] },
+      { key: 'choices', label: 'Pictures to choose from', kind: 'choice', options: nums([2, 3, 4]) },
+      { key: 'showText', label: 'Show the question as text', kind: 'choice', options: yesNo },
+      { key: 'rounds', label: 'Questions', kind: 'choice', options: nums([4, 6, 8, 10]) },
+    ],
+    defaults: [{ kind: 'which', choices: 3, showText: true, rounds: 6 }, { kind: 'what', choices: 3, showText: true, rounds: 8 }, { kind: 'think', choices: 4, showText: false, rounds: 8 }],
+  },
+  storySteps: {
+    fields: [
+      { key: 'steps', label: 'Pictures in each story', kind: 'choice', options: nums([3, 4, 5]) },
+      { key: 'stories', label: 'Stories', kind: 'choice', options: nums([1, 2, 3]) },
+      { key: 'tell', label: 'Record the child telling it', kind: 'choice', options: yesNo },
+    ],
+    defaults: [{ steps: 3, stories: 1, tell: true }, { steps: 4, stories: 2, tell: true }, { steps: 5, stories: 2, tell: true }],
+  },
 };
 
 /** The settings for one level: built-in defaults with the therapist's changes on top. */

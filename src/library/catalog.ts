@@ -33,9 +33,15 @@ export type LibraryFamilyId =
   | 'gridPatterns'
   | 'numberTree'
   | 'secretCode'
-  | 'findFigure';
+  | 'findFigure'
+  | 'sayIt'
+  | 'soundDetective'
+  | 'oddOneOut'
+  | 'listenDo'
+  | 'questionTime'
+  | 'storySteps';
 
-export type LibraryCategory = 'Visual attention' | 'Visual memory' | 'Coding & rules' | 'Number sense' | 'Fine motor & copying';
+export type LibraryCategory = 'Visual attention' | 'Visual memory' | 'Coding & rules' | 'Number sense' | 'Fine motor & copying' | 'Speech & language';
 
 export type LibraryFamily = {
   id: LibraryFamilyId;
@@ -490,13 +496,115 @@ export const LIBRARY: LibraryFamily[] = [
     modeNote: 'The figures are small and detailed — a full printed page works best.',
     levels: ['3 targets', '6 targets', '6 targets, more rotations'],
   },
+  {
+    id: 'sayIt',
+    name: 'Say It!',
+    aka: 'Naming pictures',
+    emoji: '🗣️',
+    color: '#D9480F',
+    tint: '#FFE8DC',
+    category: 'Speech & language',
+    skill: 'Naming & speaking',
+    mode: 'app',
+    ages: [2, 10],
+    minutes: 8,
+    sources: ['Speech & language pack'],
+    summary: 'The child names each picture out loud, can hear the word and record themselves to hear it back.',
+    steps: ['Look at the picture.', 'Say what it is (or what is happening).', 'Tap 🔊 to hear it, then try again.', 'Record yourself and listen back.', 'A grown-up taps “Said it!”.'],
+    levels: ['Everyday words, word shown', 'More words, word hidden', 'Action words: “What is happening?”'],
+  },
+  {
+    id: 'soundDetective',
+    name: 'Sound Detective',
+    aka: 'First sounds',
+    emoji: '🕵️',
+    color: '#5F3DC4',
+    tint: '#ECE5FF',
+    category: 'Speech & language',
+    skill: 'Phonological awareness',
+    mode: 'app',
+    ages: [4, 9],
+    minutes: 6,
+    sources: ['Speech & language pack'],
+    summary: 'Hear a sound and find the picture that starts with it.',
+    steps: ['Listen to the sound.', 'Say each picture’s name quietly.', 'Tap the one that starts with that sound.', 'Hear the word to check.'],
+    levels: ['2 pictures', '3 pictures', '4 pictures, sounds that are easy to mix up'],
+  },
+  {
+    id: 'oddOneOut',
+    name: 'Odd One Out',
+    aka: 'Which doesn’t belong?',
+    emoji: '🧺',
+    color: '#0B7285',
+    tint: '#DDF3F7',
+    category: 'Speech & language',
+    skill: 'Categories & vocabulary',
+    mode: 'app',
+    ages: [4, 10],
+    minutes: 6,
+    sources: ['Speech & language pack'],
+    summary: 'Four pictures — three go together. Find the one that doesn’t belong and hear why.',
+    steps: ['Name all four pictures.', 'Find what three of them share.', 'Tap the odd one out.', 'Say why: “The others are …”.'],
+    levels: ['Very different groups', 'Close groups (fruit vs vegetables)', 'Think harder: things that fly, cold things…'],
+  },
+  {
+    id: 'listenDo',
+    name: 'Listen & Do',
+    aka: 'Following directions',
+    emoji: '👂',
+    color: '#C2255C',
+    tint: '#FDE3EC',
+    category: 'Speech & language',
+    skill: 'Understanding instructions',
+    mode: 'app',
+    ages: [3, 9],
+    minutes: 6,
+    sources: ['Speech & language pack'],
+    summary: 'Listen to an instruction and do it: “Touch the star” up to “Put the small red ball in the box”.',
+    steps: ['Listen to the whole instruction.', 'Tap 🔊 to hear it again.', 'Tap the right thing.', 'If it says where, tap the place too.'],
+    levels: ['1 key word: “Touch the star”', '2 key words: “Touch the red star”', '3 key words + where: “Put the small red star in the box”'],
+  },
+  {
+    id: 'questionTime',
+    name: 'Question Time',
+    aka: 'WH questions',
+    emoji: '❓',
+    color: '#E67700',
+    tint: '#FFF1D6',
+    category: 'Speech & language',
+    skill: 'Answering questions',
+    mode: 'app',
+    ages: [3, 10],
+    minutes: 6,
+    sources: ['Speech & language pack'],
+    summary: 'Answer who, what and where questions by tapping the right picture.',
+    steps: ['Listen to the question.', 'Look at all the pictures.', 'Tap the answer.', 'Say the answer in a sentence.'],
+    levels: ['“Which one is the dog?”', '“What do we drink from?”', '“Where do fish live?”'],
+  },
+  {
+    id: 'storySteps',
+    name: 'Story Steps',
+    aka: 'Sequencing & retelling',
+    emoji: '📖',
+    color: '#2B8A3E',
+    tint: '#E1F5E4',
+    category: 'Speech & language',
+    skill: 'Sequencing & storytelling',
+    mode: 'app',
+    ages: [4, 10],
+    minutes: 8,
+    sources: ['Speech & language pack'],
+    summary: 'Put picture cards in order, then tell the story using first, next and last.',
+    steps: ['Look at all the pictures.', 'Tap them in the order they happen.', 'Tell the story: first, next, last.', 'Record it and listen back.'],
+    levels: ['3 pictures', '4 pictures', '5 pictures, two stories'],
+  },
 ];
 
 export const FAMILY = Object.fromEntries(LIBRARY.map((f) => [f.id, f])) as Record<LibraryFamilyId, LibraryFamily>;
 export const isLibraryFamily = (id: string): id is LibraryFamilyId => id in FAMILY;
 export const libraryTaskId = (family: LibraryFamilyId) => `library-${family}`;
 
-export const CATEGORIES: LibraryCategory[] = ['Visual attention', 'Visual memory', 'Coding & rules', 'Number sense', 'Fine motor & copying'];
+export const CATEGORIES: LibraryCategory[] = ['Visual attention', 'Visual memory', 'Coding & rules', 'Number sense', 'Fine motor & copying', 'Speech & language'];
 
 /** Does this family suit a child of this (developmental) age? */
 export function ageFit(f: LibraryFamily, age: number): 'fits' | 'young' | 'old' {

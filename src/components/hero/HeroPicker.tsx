@@ -97,7 +97,7 @@ export function HeroPicker({
       </View>
       <Text style={styles.hint}>
         {value.length === 0
-          ? `Pick up to ${max}. The first one is the game buddy.`
+          ? t('Pick up to {{n}}. The first one is the activity buddy.', { n: max })
           : `${value.map((h, i) => `${i + 1}. ${h.name}`).join('   ')}${value.length < max ? `   ·  ${max - value.length} more allowed` : ''}`}
       </Text>
       <AddHeroSheet

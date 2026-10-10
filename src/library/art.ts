@@ -26,4 +26,10 @@ export const LIBRARY_ART: Record<LibraryFamilyId, number> = {
   numberTree: require('../../assets/library/numberTree.png'),
   secretCode: require('../../assets/library/secretCode.png'),
   findFigure: require('../../assets/library/findFigure.png'),
+  sayIt: require('../../assets/library/sayIt.png'),
+  soundDetective: require('../../assets/library/soundDetective.png'),
+  oddOneOut: require('../../assets/library/oddOneOut.png'),
+  listenDo: require('../../assets/library/listenDo.png'),
+  questionTime: require('../../assets/library/questionTime.png'),
+  storySteps: require('../../assets/library/storySteps.png'),
 };

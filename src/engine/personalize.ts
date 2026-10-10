@@ -88,14 +88,14 @@ const FOCUS_GAMES: Record<Domain, TrainTaskId[]> = {
 };
 
 const PROFILE_GAMES: Record<string, { games: TrainTaskId[]; why: string }> = {
-  ADHD: { games: ['starWatch', 'goNoGo', 'flankerTask'], why: 'short attention and stop-and-think games' },
-  Autism: { games: ['switchSort', 'findTarget', 'memoryMatrix'], why: 'flexible thinking with predictable, visual games' },
+  ADHD: { games: ['starWatch', 'goNoGo', 'flankerTask'], why: 'short attention and stop-and-think activities' },
+  Autism: { games: ['switchSort', 'findTarget', 'memoryMatrix'], why: 'flexible thinking with predictable, visual activities' },
   'Learning difficulty': { games: ['findTarget', 'memoryEcho', 'blockBuilder'], why: 'small, concrete steps' },
-  'Developmental delay': { games: ['starWatch', 'findTarget', 'puzzleMatch'], why: 'simple one-rule games' },
-  'Speech & language': { games: ['findTarget', 'memoryMatrix', 'puzzleMatch'], why: 'visual games that don’t rely on spoken instructions' },
+  'Developmental delay': { games: ['starWatch', 'findTarget', 'puzzleMatch'], why: 'simple one-rule activities' },
+  'Speech & language': { games: ['findTarget', 'memoryMatrix', 'puzzleMatch'], why: 'visual activities that don’t rely on spoken instructions' },
   Dyslexia: { games: ['memoryEcho', 'speedMatch', 'memoryMatrix'], why: 'sequencing and quick visual matching' },
-  Anxiety: { games: ['mazePath', 'puzzleMatch', 'blockBuilder'], why: 'calm, low-pressure games' },
-  'Sensory processing': { games: ['puzzleMatch', 'mazePath', 'memoryMatrix'], why: 'quiet games with little on screen' },
+  Anxiety: { games: ['mazePath', 'puzzleMatch', 'blockBuilder'], why: 'calm, low-pressure activities' },
+  'Sensory processing': { games: ['puzzleMatch', 'mazePath', 'memoryMatrix'], why: 'quiet activities with little on screen' },
 };
 
 const VERBAL_GAMES: TrainTaskId[] = ['listenFor', 'followSteps', 'dualTask'];
@@ -155,7 +155,7 @@ export function personalize(child: Child, calmModeOn = false): { band: FitBand; 
     suggestions.push({
       id: 'games',
       icon: '🎯',
-      title: 'Focus games',
+      title: 'Focus activities',
       detail: listSkills(games),
       why: whys.length ? `Chosen for ${whys.join('; ')}.` : `Matches the practice focus.`,
       games,
@@ -237,7 +237,7 @@ export function personalize(child: Child, calmModeOn = false): { band: FitBand; 
       icon: '🖼️',
       title: 'Show, don’t tell',
       detail: 'Model the first round yourself and point to the target. Listen For and Follow Steps are skipped.',
-      why: 'These games rely on spoken instructions.',
+      why: 'These activities rely on spoken instructions.',
     });
   }
 
@@ -248,15 +248,15 @@ export function personalize(child: Child, calmModeOn = false): { band: FitBand; 
       ? {
           id: 'hero',
           icon: hero.emoji,
-          title: `${hero.name} is the game hero`,
-          detail: `${hero.name} ${hero.emoji} appears as the target in Tap the Stars and cheers at the start and end of every game.`,
+          title: `${hero.name} is the activity hero`,
+          detail: `${hero.name} ${hero.emoji} appears as the target in Tap the Stars and cheers at the start and end of every activity.`,
           why: 'Favourite characters keep motivation high.',
         }
       : {
           id: 'hero',
           icon: '⭐',
           title: 'Add a favourite character',
-          detail: 'Pick a character the child loves in the profile to make games feel like theirs.',
+          detail: 'Pick a character the child loves in the profile to make activities feel like theirs.',
           why: 'Personal heroes boost engagement.',
         },
   );

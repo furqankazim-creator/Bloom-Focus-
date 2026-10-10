@@ -123,7 +123,7 @@ export default function GameStudioScreen({ route, navigation }: RootProps<'GameS
         }
       }
     } catch {
-      Alert.alert('Saved, but not sent', 'The game is saved. Check your connection and send it from Messages.');
+      Alert.alert(t('Saved, but not sent'), t('The activity is saved. Check your connection and send it from Messages.'));
     } finally {
       setBusy(false);
     }
@@ -137,7 +137,7 @@ export default function GameStudioScreen({ route, navigation }: RootProps<'GameS
       navigation.goBack();
     };
     if (Platform.OS === 'web') return go();
-    Alert.alert('Delete this game?', 'The family will no longer see it.', [
+    Alert.alert(t('Delete this activity?'), t('The family will no longer see it.'), [
       { text: 'Cancel', style: 'cancel' },
       { text: 'Delete', style: 'destructive', onPress: go },
     ]);
@@ -145,17 +145,18 @@ export default function GameStudioScreen({ route, navigation }: RootProps<'GameS
 
   return (
     <Screen>
-      <TopBar title={existing ? 'Edit game' : 'Game Studio'} onBack={() => navigation.goBack()} />
+      <TopBar title={existing ? t('Edit activity') : t('Create your own')} onBack={() => navigation.goBack()} />
       {!existing && (
         <>
-          <T.Display style={{ fontSize: 30 }}>Make a game for {first}</T.Display>
+          <T.Display style={{ fontSize: 30 }}>{t('Make an activity for {{name}}', { name: first })}</T.Display>
           <T.Body style={{ marginTop: 6 }}>{t('Pick a type, add your own words or pictures, and send it to the family. It takes about a minute.')}</T.Body>
         </>
       )}
 
-      <Step n={1} title="Choose a game type" />
+      <Step n={1} title="Choose an activity type" />
       <View style={styles.templates}>
-        {TEMPLATES.map((t) => {
+        {/* Chosen already (from a problem area or Create your own, or editing): show only that type. */}
+        {(template || existing ? TEMPLATES.filter((x) => x.id === content?.template) : TEMPLATES).map((t) => {
           const on = content?.template === t.id;
           return (
             <Pressable
@@ -214,7 +215,7 @@ export default function GameStudioScreen({ route, navigation }: RootProps<'GameS
           )}
           <Text style={styles.label}>{t('Heroes (optional)')}</Text>
           <HeroPicker value={heroes} onChange={setHeroes} max={3} favourites={child.favouriteCharacters ?? []} />
-          <Text style={styles.label}>{t('Hero world around the game')}</Text>
+          <Text style={styles.label}>{t('Hero world around the activity')}</Text>
           <View style={styles.row}>
             {(['off', 'subtle', 'bold'] as const).map((v) => (
               <Pressable key={v} onPress={() => setScene(v)} style={[styles.pill, scene === v && styles.pillOn]} accessibilityRole="button">
@@ -264,7 +265,7 @@ export default function GameStudioScreen({ route, navigation }: RootProps<'GameS
             <Button label="Save & try it" icon="play" variant="soft" disabled={!!problem || busy} onPress={() => void save('try')} style={{ flex: 1 }} />
             <Button label="Save only" icon="check" variant="soft" disabled={!!problem || busy} onPress={() => void save('save')} style={{ flex: 1 }} />
           </View>
-          {existing && <Button label="Delete game" icon="trash-2" variant="danger" onPress={remove} style={{ marginTop: 10 }} />}
+          {existing && <Button label="Delete activity" icon="trash-2" variant="danger" onPress={remove} style={{ marginTop: 10 }} />}
           <T.Small style={{ textAlign: 'center', marginTop: 14 }}>{t('Families see it on Home under “From your therapist”. Pictures stay on this device in the demo.')}</T.Small>
         </>
       )}

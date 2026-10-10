@@ -139,7 +139,7 @@ export default function ActivityBuilderScreen({ route, navigation }: RootProps<'
 
   return (
     <Screen>
-      <TopBar title={existing ? 'Edit activity' : 'Customise a game'} onBack={() => navigation.goBack()} />
+      <TopBar title={existing ? 'Edit activity' : 'Customise an activity'} onBack={() => navigation.goBack()} />
 
       {/* Live poster: the game in its hero world, as the family will see it. */}
       <View style={styles.poster}>
@@ -169,9 +169,10 @@ export default function ActivityBuilderScreen({ route, navigation }: RootProps<'
       </View>
 
       {/* 1 · Game */}
-      <Section n={1} title="Game" hint={game.skill}>
+      <Section n={1} title="Activity" hint={game.skill}>
         <View style={styles.games}>
-          {TRAIN_GAMES.map((g) => {
+          {/* Chosen already (from a problem area, or editing): show only that game. */}
+          {(startTask || existing ? TRAIN_GAMES.filter((g) => g.id === taskId) : TRAIN_GAMES).map((g) => {
             const on = g.id === taskId;
             return (
               <Pressable key={g.id} onPress={() => pickGame(g.id)} style={[styles.game, on && { borderColor: g.color, backgroundColor: g.tint }]} accessibilityRole="button" accessibilityState={{ selected: on }}>
@@ -192,9 +193,9 @@ export default function ActivityBuilderScreen({ route, navigation }: RootProps<'
       </Section>
 
       {/* 2 · Heroes & world */}
-      <Section n={2} title="Heroes" hint={`Up to 3. The first is ${first}’s game buddy; it talks and cheers during play.`}>
+      <Section n={2} title="Heroes" hint={t('Up to 3. The first is {{name}}’s activity buddy; it talks and cheers during play.', { name: first })}>
         <HeroPicker value={heroes} onChange={setHeroes} max={3} favourites={child.favouriteCharacters ?? []} />
-        <Text style={styles.label}>{t('Hero world around the game')}</Text>
+        <Text style={styles.label}>{t('Hero world around the activity')}</Text>
         <View style={styles.segment}>
           {SCENES.map((o) => (
             <Pressable key={o.value} onPress={() => setScene(o.value)} style={[styles.segmentItem, scene === o.value && styles.segmentOn]} accessibilityRole="button" accessibilityState={{ selected: scene === o.value }}>
@@ -324,7 +325,7 @@ const styles = StyleSheet.create({
   sectionHint: { fontFamily: font.regular, fontSize: 12.5, lineHeight: 18, color: colors.inkSoft, marginTop: 2 },
 
   games: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  game: { width: '48.5%', flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 10, paddingVertical: 9, borderRadius: 14, borderWidth: 1.5, borderColor: colors.border, backgroundColor: colors.bg },
+  game: { width: '48.5%', flexGrow: 1, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 10, paddingVertical: 9, borderRadius: 14, borderWidth: 1.5, borderColor: colors.border, backgroundColor: colors.bg },
   gameTitle: { fontFamily: font.semibold, fontSize: 13, color: colors.ink },
   gameSkill: { fontFamily: font.regular, fontSize: 11, color: colors.inkMuted },
 

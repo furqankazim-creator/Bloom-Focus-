@@ -6,6 +6,9 @@
 import { FAMILY, LEVEL_NAMES, type LibraryFamilyId } from './catalog';
 import { P3, P4, P5, type Seg } from './patterns';
 import { configFor, type LevelConfig, type LibraryCustom } from './settings';
+import { getLang } from '../i18n';
+import { COLOUR_HEX, CONTAINER_EMOJI, instructionText, linksFor, whichIs } from './speech/data';
+import { OBJ_SHAPE, listenRounds, oddRounds, questionRounds, sayItDeck, soundRounds, storyRounds } from './speech/rounds';
 
 type C = LevelConfig;
 
@@ -535,10 +538,77 @@ function findFigure(level: number, r: R, c: string, cfg: C) {
   return svg(570, Math.ceil(n / cols) * 82 + 20, items.join('')) + `<div class="targets">${key}</div>`;
 }
 
+
+/* ——— Speech & language sheets (words in the app language) ——— */
+
+const card = (emoji: string, label = '', extra = '') =>
+  `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:2.5px solid #D9DCE6;border-radius:18px;padding:10px 6px;min-height:110px;background:#fff">` +
+  `<div style="font-size:52px;line-height:1.1">${emoji}</div>${label ? `<div style="font-size:16px;font-weight:700">${esc(label)}</div>` : ''}${extra}</div>`;
+const gridOf = (cols: number, cells: string[]) => `<div style="display:grid;grid-template-columns:repeat(${cols},1fr);gap:12px;width:100%">${cells.join('')}</div>`;
+const tick = (c: string) => `<div style="font-size:20px;color:${c};letter-spacing:4px">☆ ☆ ☆</div>`;
+const sRand = (r: R) => () => r();
+
+function sayIt(_level: number, r: R, c: string, cfg: C) {
+  const lang = getLang();
+  const deck = sayItDeck({ words: cfg.own?.length ? 'own' : cfg.words, count: cfg.count, own: cfg.own }, lang, sRand(r));
+  return `<p class="hint">Say each picture out loud. Colour a star each time you say it well.</p>${gridOf(3, deck.map((d) => card(d.emoji, cfg.showWord || cfg.own?.length ? d.word : '', tick(c))))}`;
+}
+
+function soundDetective(_level: number, r: R, c: string, cfg: C) {
+  const lang = getLang();
+  const rounds = soundRounds({ rounds: Math.min(cfg.rounds ?? 6, 6), choices: cfg.choices, tricky: cfg.tricky }, lang, sRand(r));
+  const rows = rounds.map(
+    (rd) =>
+      `<div style="display:flex;align-items:center;gap:12px;width:100%"><div class="target" style="border-color:${c};color:${c};flex:none">${esc(rd.letter)}</div>` +
+      `<div style="flex:1">${gridOf(rd.options.length, rd.options.map((o) => card(o.emoji)))}</div></div>`,
+  );
+  return `<p class="hint">Say the sound. Circle the picture that starts with it.</p>${rows.join('')}`;
+}
+
+function oddOneOut(_level: number, r: R, _c: string, cfg: C) {
+  const rows = oddRounds({ rounds: Math.min(cfg.rounds ?? 6, 6), kind: cfg.kind }, sRand(r)).map((rd) => gridOf(4, rd.items.map((x) => card(x.emoji, x[getLang()]))));
+  return `<p class="hint">Three pictures go together. Cross out the one that doesn’t belong and say why.</p>${rows.join('<hr style="width:100%;border:0;border-top:1.5px dashed #D9DCE6;margin:2px 0">')}`;
+}
+
+function listenDo(_level: number, r: R, c: string, cfg: C) {
+  const lang = getLang();
+  const rounds = listenRounds({ rounds: cfg.rounds, keyWords: cfg.keyWords, containers: cfg.containers }, sRand(r));
+  const all = rounds[0]?.objects ?? [];
+  const pics = all.map((o) => `<div style="display:flex;align-items:center;justify-content:center;border:2px solid #D9DCE6;border-radius:16px;height:110px">${svg(100, 100, shape(OBJ_SHAPE[o.kind], 50, 50, o.size === 'big' ? 80 : 44, COLOUR_HEX[o.colour]))}</div>`);
+  const conts = rounds[0]?.containers.map((k) => card(CONTAINER_EMOJI[k])) ?? [];
+  const list = rounds.map((rd, i) => `<li style="margin:6px 0;font-size:16px"><b>${i + 1}.</b> ${esc(instructionText(rd.ins, lang))}</li>`).join('');
+  return `<p class="hint">Grown-up: read one instruction at a time, once. The child points (or colours) the right one.</p>` +
+    `${gridOf(3, pics)}${conts.length ? `<div style="width:100%;margin-top:6px">${gridOf(3, conts)}</div>` : ''}` +
+    `<div style="width:100%;border:2px dashed ${c};border-radius:16px;padding:10px 16px"><b>Instructions for the grown-up</b><ul style="list-style:none;padding:0;margin:6px 0 0">${list}</ul></div>`;
+}
+
+function questionTime(_level: number, r: R, _c: string, cfg: C) {
+  const lang = getLang();
+  const rows = questionRounds({ rounds: Math.min(cfg.rounds ?? 6, 6), kind: cfg.kind, choices: cfg.choices }, sRand(r)).map((rd) => {
+    const q = 'word' in rd.question ? whichIs[lang].replace('{{x}}', rd.question.word[lang]) : rd.question[lang];
+    return `<div style="width:100%"><div style="font-size:17px;font-weight:800;margin-bottom:6px">${esc(q)}</div>${gridOf(rd.options.length, rd.options.map((o) => card(o.emoji)))}</div>`;
+  });
+  return `<p class="hint">Listen to the question. Circle the right picture.</p>${rows.join('')}`;
+}
+
+function storySteps(_level: number, r: R, c: string, cfg: C) {
+  const lang = getLang();
+  const box = `<div style="width:34px;height:34px;border:2.5px solid ${c};border-radius:10px;margin-top:4px"></div>`;
+  return storyRounds({ steps: cfg.steps, stories: cfg.stories }, sRand(r))
+    .map((rd) => {
+      const links = linksFor(rd.order.length, lang).map((l) => `<div style="display:flex;gap:8px;align-items:flex-end;margin:6px 0"><b style="min-width:90px">${esc(l)}…</b><span style="flex:1;border-bottom:1.5px solid #9AA0B8;height:18px"></span></div>`).join('');
+      return `<div style="width:100%"><h3 class="theme" style="color:${c}">${esc(rd.story.title[lang])}</h3>` +
+        `${gridOf(rd.order.length, rd.shuffled.map((s) => card(rd.story.steps[s].emoji, '', box)))}` +
+        `<p class="hint" style="text-align:left;margin-top:8px">Write 1, 2, 3… in the order they happen. Then tell the story:</p>${links}</div>`;
+    })
+    .join('');
+}
+
 const GENERATORS: Record<LibraryFamilyId, (level: number, r: R, c: string, cfg: C) => string> = {
   symbolMatch, colourConnect, dotCopy, shapeCode, shapeSums, continuePattern, compareNumbers, numberSearch, mathSearch,
   numberSnake, stackSquares, colourSymbol, spotDifference, rainbow, wordSearch, followLines, diceMatch, dotToDot, countShapes,
   mirrorDraw, gridPatterns, numberTree, secretCode, findFigure,
+  sayIt, soundDetective, oddOneOut, listenDo, questionTime, storySteps,
 };
 
 /** Every Skill Builder has a printable colour sheet. */

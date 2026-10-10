@@ -39,7 +39,7 @@ export function MonthPlanEditor({ child, sessions, onSave }: { child: Child; ses
         <Text style={styles.introEmoji}>🗓️</Text>
         <Text style={styles.introTitle}>{t('Plan the next 4 weeks')}</Text>
         <Text style={styles.introBody}>
-          {t('One goal and a few focus games for each week. The running week’s games lead {{name}}’s daily training, and the family sees “Week 2 of 4”.', { name: child.name.split(' ')[0] })}
+          {t('One goal and a few activities for each week. The running week’s activities lead {{name}}’s daily training, and the family sees “Week 2 of 4”.', { name: child.name.split(' ')[0] })}
         </Text>
         <Button
           label="Suggest a 4-week plan"
@@ -103,7 +103,7 @@ export function MonthPlanEditor({ child, sessions, onSave }: { child: Child; ses
                   {w.goal || t('No goal yet')}
                 </Text>
                 <Text style={styles.weekGames}>
-                  {w.games.map((g) => `${TRAIN_BY_ID[g].icon} ${t(TRAIN_BY_ID[g].title)}`).join('  ·  ') || t('No games picked')}
+                  {w.games.map((g) => `${TRAIN_BY_ID[g].icon} ${t(TRAIN_BY_ID[g].title)}`).join('  ·  ') || t('No activities picked')}
                   {days !== null ? `  ·  ${t('{{n}} of 7 days practised', { n: days })}` : ''}
                 </Text>
               </View>
@@ -115,12 +115,12 @@ export function MonthPlanEditor({ child, sessions, onSave }: { child: Child; ses
                 <TextInput
                   value={w.goal}
                   onChangeText={(v) => setWeek(i, { goal: v })}
-                  placeholder={t('e.g. Stay with one game for 2 minutes')}
+                  placeholder={t('e.g. Stay with one activity for 2 minutes')}
                   placeholderTextColor={colors.inkMuted}
                   style={styles.input}
                   multiline
                 />
-                <Text style={styles.label}>{t('Focus games (up to 3)')}</Text>
+                <Text style={styles.label}>{t('Activities (up to 3)')}</Text>
                 <View style={styles.wrap}>
                   {TRAIN_IDS.map((id) => {
                     const on = w.games.includes(id);

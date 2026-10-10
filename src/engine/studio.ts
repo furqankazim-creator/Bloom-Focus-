@@ -151,7 +151,7 @@ export const emojiPic = (value: string): StudioPicture => ({ kind: 'emoji', valu
 
 /** Basic check that a game has enough content to play. Returns a message or null. */
 export function contentProblem(c: StudioContent | null): string | null {
-  if (!c) return 'Choose a game type.';
+  if (!c) return 'Choose an activity type.';
   switch (c.template) {
     case 'puzzle':
       return c.image ? null : 'Add a picture for the puzzle.';

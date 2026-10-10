@@ -127,7 +127,7 @@ export default function LibraryCustomiseScreen({ route, navigation }: RootProps<
         <HeroPicker value={heroes} onChange={setHeroes} favourites={previewChild?.favouriteCharacters ?? []} />
         {f.mode === 'app' && (
           <>
-            <Text style={styles.label}>{t('Hero world around the game')}</Text>
+            <Text style={styles.label}>{t('Hero world around the activity')}</Text>
             <View style={styles.segRow}>
               {SCENES.map((sc) => (
                 <Pressable key={sc.id} onPress={() => setScene(sc.id)} style={[styles.seg, scene === sc.id && { backgroundColor: f.color }]} accessibilityRole="button" accessibilityState={{ selected: scene === sc.id }}>

@@ -20,6 +20,12 @@ import SpotDifference from './SpotDifference';
 import StackSquares from './StackSquares';
 import SymbolMatch from './SymbolMatch';
 import WordSearch from './WordSearch';
+import SayIt from './SayIt';
+import SoundDetective from './SoundDetective';
+import OddOneOut from './OddOneOut';
+import ListenDo from './ListenDo';
+import QuestionTime from './QuestionTime';
+import StorySteps from './StorySteps';
 
 /** The phone games for `app` families. Paper and flashcard families have none. */
 export const LIBRARY_GAMES: Partial<Record<LibraryFamilyId, React.ComponentType<LibraryGameProps>>> = {
@@ -42,4 +48,10 @@ export const LIBRARY_GAMES: Partial<Record<LibraryFamilyId, React.ComponentType<
   diceMatch: DiceMatch,
   dotToDot: DotToDot,
   countShapes: CountShapes,
+  sayIt: SayIt,
+  soundDetective: SoundDetective,
+  oddOneOut: OddOneOut,
+  listenDo: ListenDo,
+  questionTime: QuestionTime,
+  storySteps: StorySteps,
 };

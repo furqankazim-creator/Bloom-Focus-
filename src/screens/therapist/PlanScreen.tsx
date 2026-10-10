@@ -176,7 +176,7 @@ export default function PlanScreen() {
 
       {tab === 'home' && (
         <>
-          <Text style={styles.lead}>Games and activities {first} plays at home.</Text>
+          <Text style={styles.lead}>{t('Activities {{name}} plays at home.', { name: first })}</Text>
           <Pressable onPress={() => nav.navigate('Library', { childId: child.id })} style={styles.addBtn} accessibilityRole="button" accessibilityLabel="Add an activity">
             <View style={styles.addArt}>
               {LIBRARY.slice(0, 3).map((f, i) => (
@@ -185,7 +185,7 @@ export default function PlanScreen() {
             </View>
             <View style={{ flex: 1 }}>
               <Text style={styles.addTitle}>{t('Add activity')}</Text>
-              <Text style={styles.addHint}>{t('Skill Builders · worksheets, focus games or your own')}</Text>
+              <Text style={styles.addHint}>{t('Pick by the child’s problem area')}</Text>
             </View>
             <View style={styles.addPlus}>
               <Feather name="plus" size={20} color={colors.forest} />
